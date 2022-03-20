@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+
 namespace Namordnik.Pages
 {
     /// <summary>
@@ -22,6 +23,7 @@ namespace Namordnik.Pages
     public partial class MainPage : Page
     {
         List<Product> ProductStart = BaseClass.Base.Product.ToList();
+        PaginationClass pg = new PaginationClass();
         List<Product> PRFilter;
         public MainPage()
         {
@@ -39,6 +41,10 @@ namespace Namordnik.Pages
                 CBFilter.Items.Add(PT[i].Title);
             }
             CBFilter.SelectedIndex = 0;
+            DataContext = pg;
+            pg.CountPage = 15;
+            pg.Countlist = PRFilter.Count;
+            LVProdMat.ItemsSource = PRFilter.Skip(0).Take(pg.CountPage).ToList();
         }
         private void TextBlock_Loaded(object sender, RoutedEventArgs e)
         {
@@ -65,12 +71,14 @@ namespace Namordnik.Pages
             TextBlock tb = (TextBlock)sender;
             int index = Convert.ToInt32(tb.Uid);
             List<ProductMaterial> PT = BaseClass.Base.ProductMaterial.Where(x => x.ProductID == index).ToList();
-
+            
             int cost = 0;
 
             foreach (ProductMaterial item in PT)
             {
+               
                 cost += (int)item.Material.Cost;
+                
             }
             tb.Text = cost + " руб.";
         }
@@ -144,6 +152,77 @@ namespace Namordnik.Pages
                 LVProdMat.Items.Refresh();
             }
 
+        }
+
+        private void LVProdMat_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (LVProdMat.SelectedIndex != -1)
+            {
+                Changed.Visibility = Visibility.Visible;
+                WRDoc.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                Changed.Visibility = Visibility.Collapsed;
+                WRDoc.Visibility = Visibility.Visible;
+            }
+        }
+
+        private void Changed_Click(object sender, RoutedEventArgs e)
+        {
+            var list = LVProdMat.SelectedItems;
+            int sum = 0;
+            foreach (Product PR in list)
+            {
+                sum += (int)PR.MinCostForAgent;
+            }
+            sum = sum / LVProdMat.SelectedItems.Count;
+            ChangedWindow changedWindow = new ChangedWindow(sum);
+            changedWindow.ShowDialog();
+
+            foreach (Product PR in list)
+            {
+                PR.MinCostForAgent += changedWindow.srcost;
+            }
+            LVProdMat.Items.Refresh();
+
+        }
+  
+
+        private void BtnAdd_Click(object sender, RoutedEventArgs e)
+        {
+            FrameClass.FrameMain.Navigate(new CreateOrUpdatePage());
+        }
+
+        private void BtnRed_Click(object sender, RoutedEventArgs e)
+        {
+            Button B = (Button)sender;  
+            int ind = Convert.ToInt32(B.Uid);  
+            Product PrUpdate = BaseClass.Base.Product.FirstOrDefault(y => y.ID == ind);  
+            FrameClass.FrameMain.Navigate(new CreateOrUpdatePage(PrUpdate));
+        }
+
+        private void GoPage_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            TextBlock tb = (TextBlock)sender;
+            switch (tb.Uid)  // определяем, куда конкретно было сделано нажатие
+            {
+                case "prev":
+                    pg.CurrentPage--;
+                    break;
+                case "next":
+                    pg.CurrentPage++;
+                    break;
+                default:
+                    pg.CurrentPage = Convert.ToInt32(tb.Text);
+                    break;
+            }
+            LVProdMat.ItemsSource = PRFilter.Skip(pg.CurrentPage * pg.CountPage - pg.CountPage).Take(pg.CountPage).ToList();
+        }
+
+        private void WRDoc_Click(object sender, RoutedEventArgs e)
+        {
+            FrameClass.FrameMain.Navigate(new Reports());
         }
     }
 }

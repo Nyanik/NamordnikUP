@@ -6,29 +6,34 @@
       xmlns:local="clr-namespace:Namordnik.Pages"
       mc:Ignorable="d" 
        d:DesignHeight="900" d:DesignWidth="750"
-      Title="Page1" MaxWidth="750" MaxHeight="900" MinHeight="900" MinWidth="750">
+      Title="MainPage" MaxWidth="750" MaxHeight="900" MinHeight="900" MinWidth="750">
     <Page.Resources>
         <BitmapImage x:Key="defaulimage" UriSource="/Resources/picture.png"></BitmapImage>
     </Page.Resources>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="150"></RowDefinition>
+            <RowDefinition Height="170"></RowDefinition>
+            <RowDefinition Height="470" ></RowDefinition>
             <RowDefinition ></RowDefinition>
         </Grid.RowDefinitions>
-        <StackPanel   Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Center">
+        <StackPanel   Orientation="Vertical" VerticalAlignment="Top" HorizontalAlignment="Center">
             <Image Source="/Resources/Намордник.png" Height="80" Width="80"></Image>
-            <TextBlock  VerticalAlignment="Center" Margin="30,0,0,0">Намордник</TextBlock>
+            <TextBlock  VerticalAlignment="Center" HorizontalAlignment="Center" >Намордник</TextBlock>
         </StackPanel>
         <StackPanel  Height="50" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="0,25" Orientation="Horizontal">
             <TextBox Name="TBFilter" TextChanged="TBFilter_TextChanged" Width="380" Height="25" Margin="10,0,30,0"></TextBox>
             <ComboBox Name="CBSort" Width="150" Height="25" Margin="0,0,30,0"></ComboBox>
             <ComboBox Name="CBFilter" SelectionChanged="CBFilter_SelectionChanged" Width="150" Height="25" Margin="0,0,0,0"></ComboBox>
         </StackPanel>
-        <StackPanel VerticalAlignment="Bottom" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,180,0">
+        <StackPanel VerticalAlignment="Bottom" Orientation="Horizontal" HorizontalAlignment="Right" >
+            <Button  Width="380" Height="25" Margin="0,0,30,0" Name="WRDoc" Click="WRDoc_Click" Visibility="Visible">Экспрот в Word</Button>
+            <Button Width="380" Height="25" Margin="0,0,30,0" Name="Changed" Click="Changed_Click" Visibility="Collapsed">Изменить стоимость на...</Button>
             <Button Width="60" Height="25" Margin="0,0,30,0" Name="BtnSortUp" Click="BtnSortUp_Click">По возр.</Button>
-            <Button Width="60" Height="25" Name="BtnSortDown" Click="BtnSortDown_Click">По убыв.</Button>
+            <Button Width="60" Height="25" Margin="0,0,30,0" Name="BtnSortDown" Click="BtnSortDown_Click">По убыв.</Button>
+            <Button Width="150" Height="25" Name="BtnAdd" Click="BtnAdd_Click">Добавить продукцию</Button>
         </StackPanel>
-        <ListView Name="LVProdMat"  ScrollViewer.HorizontalScrollBarVisibility="Disabled" Grid.Row="1" BorderThickness="0">
+
+        <ListView Name="LVProdMat" SelectionMode="Multiple" SelectionChanged="LVProdMat_SelectionChanged" ScrollViewer.HorizontalScrollBarVisibility="Disabled"  Grid.Row="1" BorderThickness="0">
             <ListView.ItemsPanel >
                 <ItemsPanelTemplate>
                     <WrapPanel HorizontalAlignment="Center"></WrapPanel>
@@ -36,23 +41,37 @@
             </ListView.ItemsPanel>
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <Border Padding="5" CornerRadius="5" BorderThickness="1" BorderBrush="#FDBD40" Background="#B0E5FD">
-                        <Grid Width="700" Height="50">
+                    <Border Padding="5" CornerRadius="5" BorderThickness="1" BorderBrush="#FDBD40" Background="{Binding PrColor}">
+                        <Grid Width="700" Height="65">
                             <StackPanel Orientation="Horizontal">
                                 <Image Margin="0,0,20,0" Source="{Binding Image,TargetNullValue={StaticResource defaulimage}}" Height="50" Width="70"/>
                                 <StackPanel Orientation="Vertical">
                                     <TextBlock Text="{Binding Header}"></TextBlock>
                                     <TextBlock Text="{Binding ArticleNumber, StringFormat={}Артикул: {0}}"></TextBlock>
-                                    <TextBlock Loaded="TextBlock_Loaded" Uid="{Binding ID}" Width="550" TextWrapping="Wrap"></TextBlock>
+                                    <TextBlock Loaded="TextBlock_Loaded" Uid="{Binding ID}" Width="520" TextWrapping="Wrap"></TextBlock>
                                 </StackPanel>
                             </StackPanel>
                             <StackPanel HorizontalAlignment="Right">
                                 <TextBlock Loaded="TextBlock_Loaded_1" Uid="{Binding ID}"></TextBlock>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Right">
+                                <Button Name="BtnRed" Uid="{Binding ID}" Click="BtnRed_Click"  Width="90" Height="20" >Редактировать</Button>
+                                
                             </StackPanel>
                         </Grid>
                     </Border>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
+       <StackPanel Grid.Row="2">
+        <WrapPanel Orientation="Horizontal" HorizontalAlignment="Center">
+            <TextBlock Name="txtPrev" Uid="prev" Text=" Пред." MouseDown="GoPage_MouseDown" />
+            <TextBlock Name="txt1" Uid="1" Text="{Binding  Path = NPage[0], StringFormat={}{0,3}}" Visibility="{Binding Visible[0]}" FontWeight="{Binding Bold[0]}" MouseDown="GoPage_MouseDown" />
+            <TextBlock Name="txt2" Uid="2" Text="{Binding  Path = NPage[1], StringFormat={}{0,3}}" Visibility="{Binding Visible[1]}" FontWeight="{Binding Bold[1]}" MouseDown="GoPage_MouseDown" />
+            <TextBlock Name="txt3" Uid="3" Text="{Binding  Path = NPage[2], StringFormat={}{0,3}}" Visibility="{Binding Visible[2]}" FontWeight="{Binding Bold[2]}" MouseDown="GoPage_MouseDown" />
+            <TextBlock Name="txt4" Uid="4" Text="{Binding  Path = NPage[3], StringFormat={}{0,3}}" Visibility="{Binding Visible[3]}" FontWeight="{Binding Bold[3]}" MouseDown="GoPage_MouseDown" />
+            <TextBlock Name="txtNext" Uid="next" Text=" След." MouseDown="GoPage_MouseDown" />
+        </WrapPanel>
+       </StackPanel>
     </Grid>
 </Page>

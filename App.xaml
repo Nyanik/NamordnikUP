@@ -4,6 +4,17 @@
              xmlns:local="clr-namespace:Namordnik"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <Style TargetType="TextBlock">
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontFamily" Value="Tw Cen MT"></Setter>
+        </Style>
+        <Style TargetType="ComboBox">
+            <Setter Property="FontFamily" Value="Tw Cen MT"></Setter>
+            <Setter Property="Background" Value="#B0E5FD"/>
+        </Style>
+        <Style TargetType="Button">
+            <Setter Property="Background" Value="#FDBD40"/>
+            <Setter Property="FontFamily" Value="Tw Cen MT"></Setter>
+        </Style>
     </Application.Resources>
 </Application>

@@ -1,0 +1,41 @@
+﻿<Page x:Class="Namordnik.Pages.CreateOrUpdatePage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Namordnik.Pages"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="CreateOrUpdatePage">
+
+    <Grid>
+        <StackPanel>
+            <GroupBox Header="Выберите тип продукта">
+                <ComboBox Name="CBTypePr"></ComboBox>
+            </GroupBox>
+            <GroupBox Header="Введите наименование продукта">
+                <TextBox Name="TBNamePr" ></TextBox>
+            </GroupBox>
+            <GroupBox Header="Введите арктикул продукта">
+                <TextBox Name="TBArct"></TextBox>
+            </GroupBox>
+            <GroupBox Header="Введите кол-во человек для производства">
+                <TextBox Name="TBKolvo" ></TextBox>
+            </GroupBox>
+            <GroupBox Header="Введите номер производственного цеха">
+                <TextBox Name="TBNumder" ></TextBox>
+            </GroupBox>
+            <GroupBox Header="Введите мнимальную стоимость для агента">
+                <TextBox Name="TBMinCost" ></TextBox>
+            </GroupBox>
+            <Image Name="ImagePr" Width="80" Height="80"/>
+            <Button Name="BtnSetPhoto" Click="BtnSetPhoto_Click">Выберите фото продукта</Button>
+            <GroupBox Header="Выберите материал">
+                <ComboBox Name="CBMaterial" IsEditable="True"></ComboBox>
+            </GroupBox>
+            <ListBox Name="LBMaterail" ></ListBox>
+            <Button Name="BtnAddRed" Click="BtnAddRed_Click">Добавить\Редактировать</Button>
+            <Button Name="BtnDel" Uid="{Binding ID}" Click="BtnDel_Click" Visibility="Collapsed">Удалить</Button>
+        </StackPanel>
+    </Grid>
+</Page>

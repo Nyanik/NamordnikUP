@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Namordnik"
         mc:Ignorable="d"
-        Title="Намордник" Height="450" Width="800">
+        d:DesignHeight="1000" d:DesignWidth="800"
+        Title="Намордник" MaxWidth="800" MaxHeight="1000" MinHeight="1000" MinWidth="800">
     <Grid>
         <Frame Name="MainFrame" NavigationUIVisibility="Hidden"></Frame>
     </Grid>
